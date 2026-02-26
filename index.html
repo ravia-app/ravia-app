@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ravia - Path of Healing</title>
+  <meta name="description" content="Ravia helps you make conscious decisions through pause, awareness, and pattern understanding." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #0f2d1a;
+      --green-dark: #1a4028;
+      --green-mid: #2d6a3f;
+      --green-light: #4a9960;
+      --green-muted: #a8c8b0;
+      --green-tint: #e8f2eb;
+      --cream: #f7f4ef;
+      --amber: #c9882a;
+      --text-light: #f4f8f5;
+      --text-dark: #153321;
+      --max-width: 1120px;
+      --section-pad: clamp(4rem, 8vw, 7rem);
+      --radius: 1rem;
+      --ease: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(100% - 2.4rem, var(--max-width));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding-block: var(--section-pad);
+      position: relative;
+    }
+
+    .has-grain {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .has-grain::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: soft-light;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: "Cormorant Garamond", serif;
+      line-height: 1.08;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    p {
+      font-size: clamp(1rem, 1.5vw, 1.1rem);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.8rem 1.3rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: transform 0.35s var(--ease), background-color 0.35s var(--ease), border-color 0.35s var(--ease), color 0.35s var(--ease);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--green-light);
+      color: #f6fbf7;
+      border-color: var(--green-light);
+    }
+
+    .btn-primary:hover {
+      background: #60ad75;
+      border-color: #60ad75;
+    }
+
+    .btn-ghost {
+      border-color: rgba(245, 252, 248, 0.7);
+      color: var(--text-light);
+      background: transparent;
+    }
+
+    .btn-ghost:hover {
+      border-color: #f8fffb;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      transition: background-color 0.35s var(--ease), backdrop-filter 0.35s var(--ease), border-color 0.35s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+
+    .site-nav.scrolled {
+      background: rgba(26, 64, 40, 0.88);
+      border-color: rgba(169, 203, 179, 0.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .nav-wrap {
+      height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      color: #f5fbf7;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-btn {
+      color: #f3f9f5;
+      border: 1px solid rgba(236, 248, 239, 0.7);
+      background: transparent;
+      padding: 0.62rem 1.1rem;
+      font-size: 0.92rem;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(74, 153, 96, 0.22), rgba(15, 45, 26, 0) 44%),
+        radial-gradient(circle at 80% 25%, rgba(74, 153, 96, 0.16), rgba(15, 45, 26, 0) 45%),
+        var(--bg-deep);
+      color: var(--text-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      padding-top: 5.2rem;
+      max-width: 760px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6.8vw, 5.2rem);
+      margin: 1.15rem 0 1.15rem;
+      max-width: 16ch;
+    }
+
+    .hero p {
+      color: #d9eadf;
+      max-width: 56ch;
+      font-size: clamp(1.02rem, 2.1vw, 1.2rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.9rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      left: 50%;
+      bottom: 1.6rem;
+      width: 1.2rem;
+      height: 2.1rem;
+      margin-left: -0.6rem;
+      border: 1px solid rgba(227, 244, 232, 0.65);
+      border-radius: 999px;
+    }
+
+    .scroll-indicator::after {
+      content: "";
+      position: absolute;
+      top: 0.38rem;
+      left: 50%;
+      width: 0.24rem;
+      height: 0.46rem;
+      margin-left: -0.12rem;
+      border-radius: 999px;
+      background: #ebf6ee;
+      animation: wheel 1.8s infinite;
+    }
+
+    @keyframes wheel {
+      0% { opacity: 0; transform: translateY(0); }
+      35% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(0.64rem); }
+    }
+
+    .purpose {
+      background: var(--cream);
+      color: var(--text-dark);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: clamp(1.4rem, 6vw, 5.5rem);
+      align-items: start;
+    }
+
+    .pull-quote {
+      font-size: clamp(2rem, 5vw, 3.75rem);
+      color: var(--green-dark);
+      max-width: 12ch;
+    }
+
+    .purpose p + p {
+      margin-top: 1.2rem;
+    }
+
+    .features {
+      background: var(--green-dark);
+      color: #ebf5ee;
+    }
+
+    .section-heading {
+      margin-bottom: 2.2rem;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-top: 0.4rem;
+    }
+
+    .label {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--green-muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: rgba(232, 242, 235, 0.05);
+      border: 1px solid rgba(168, 200, 176, 0.2);
+      border-radius: var(--radius);
+      padding: 1.3rem;
+      min-height: 220px;
+    }
+
+    .card h3 {
+      font-size: 1.85rem;
+      margin: 0.85rem 0 0.6rem;
+    }
+
+    .icon {
+      width: 38px;
+      height: 38px;
+      color: var(--green-muted);
+    }
+
+    .why {
+      background: var(--cream);
+    }
+
+    .stats {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .stat {
+      display: flex;
+      align-items: baseline;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-number {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.2rem, 5vw, 3.3rem);
+      color: var(--green-mid);
+      line-height: 0.95;
+      min-width: 2.8ch;
+    }
+
+    .stat-label {
+      color: #234733;
+      font-weight: 500;
+    }
+
+    .privacy {
+      background: var(--bg-deep);
+      color: #ecf6ef;
+      text-align: center;
+    }
+
+    .privacy h2 {
+      font-size: clamp(2.1rem, 4.7vw, 3.8rem);
+      margin-bottom: 1.8rem;
+    }
+
+    .privacy-list {
+      max-width: 880px;
+      margin-inline: auto;
+      border-top: 1px solid rgba(168, 200, 176, 0.27);
+      border-bottom: 1px solid rgba(168, 200, 176, 0.27);
+    }
+
+    .privacy-item {
+      padding: 1rem 0;
+      font-size: 1.05rem;
+    }
+
+    .privacy-item + .privacy-item {
+      border-top: 1px solid rgba(168, 200, 176, 0.23);
+    }
+
+    .privacy-note {
+      margin-top: 1.4rem;
+      color: #d4e8da;
+      font-size: 0.95rem;
+    }
+
+    .cta {
+      background: var(--green-mid);
+      text-align: center;
+      color: #f4f8f5;
+    }
+
+    .cta h2 {
+      font-size: clamp(2.1rem, 4.7vw, 3.8rem);
+      margin-bottom: 0.85rem;
+    }
+
+    .play-btn {
+      margin-top: 1.5rem;
+      background: #123121;
+      border: 1px solid rgba(220, 239, 227, 0.32);
+      color: #f6fbf8;
+      padding-inline: 1.45rem;
+    }
+
+    .footer {
+      background: #0c2416;
+      color: #dceddf;
+      padding-top: 2.4rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 1.2rem;
+      padding-bottom: 1.6rem;
+      align-items: start;
+    }
+
+    .footer-logo {
+      font-size: 1.9rem;
+      font-family: "Cormorant Garamond", serif;
+      color: #f2f9f4;
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+    }
+
+    .footer-links a {
+      color: #d7eadc;
+    }
+
+    .footer-note {
+      text-align: right;
+      font-size: 0.95rem;
+    }
+
+    .footer-note small {
+      color: #b6d3bf;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(168, 200, 176, 0.24);
+      padding: 1rem 0 1.25rem;
+      text-align: center;
+      color: #bcd8c5;
+      font-size: 0.88rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-item {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: fadeUp 0.8s var(--ease) forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.5s; }
+    .delay-4 { animation-delay: 0.7s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-note {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-wrap {
+        height: 4.3rem;
+      }
+
+      .logo {
+        font-size: 1.75rem;
+      }
+
+      .nav-btn {
+        font-size: 0.82rem;
+        padding: 0.52rem 0.9rem;
+      }
+
+      .hero-content {
+        padding-top: 4.9rem;
+      }
+
+      .section {
+        padding-block: clamp(3.3rem, 9vw, 4.5rem);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal,
+      .hero-item {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" id="siteNav">
+    <div class="container nav-wrap">
+      <a href="#top" class="logo">Ravia</a>
+      <a href="#download" class="btn nav-btn">Get it on Google Play</a>
+    </div>
+  </nav>
+
+  <header id="top" class="hero has-grain">
+    <div class="container hero-content">
+      <p class="eyebrow hero-item delay-1">Path of Healing</p>
+      <h1 class="hero-item delay-2">The pause between urge and action.</h1>
+      <p class="hero-item delay-3">Ravia helps you understand your patterns, not through willpower, but through awareness.</p>
+      <div class="hero-actions hero-item delay-4">
+        <a href="#download" class="btn btn-primary">Get on Google Play</a>
+        <a href="#purpose" class="btn btn-ghost">Learn more</a>
+      </div>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true"></div>
+  </header>
+
+  <section id="purpose" class="section purpose">
+    <div class="container split">
+      <h2 class="pull-quote reveal">Most people fight this completely alone.</h2>
+      <div class="reveal">
+        <p>Adult-content addiction is often invisible from the outside, but deeply disruptive on the inside. Many people are trying to change privately, without language for what they are experiencing.</p>
+        <p>Most blockers are easy to bypass in seconds. In moments of urgency, the decision becomes automatic before awareness has a chance to return.</p>
+        <p>Therapy is powerful, but for many people it remains expensive, distant, or not yet possible. Ravia is built for the space in between: private, practical support for a conscious next step.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section features has-grain">
+    <div class="container">
+      <div class="section-heading reveal">
+        <p class="label">How it works</p>
+        <h2>Built around pause, pattern, and awareness.</h2>
+      </div>
+      <div class="cards">
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="4" width="4" height="16" rx="1.2"></rect>
+            <rect x="15" y="4" width="4" height="16" rx="1.2"></rect>
+          </svg>
+          <h3>Conscious Pause</h3>
+          <p>When you try to turn off protection, Ravia walks you through a short series of questions. Not to stop you by force, but to make the decision a real one.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 14c2.5 0 2.5-4 5-4s2.5 4 5 4 2.5-4 5-4 2.5 4 5 4"></path>
+            <path d="M2 8c2.5 0 2.5-4 5-4s2.5 4 5 4 2.5-4 5-4 2.5 4 5 4"></path>
+          </svg>
+          <h3>Pattern Awareness</h3>
+          <p>Your behavior over time reveals when and why you struggle. Ravia shows you your own patterns in your own words.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="14" height="18" rx="2"></rect>
+            <path d="M7 7h6M7 11h6M7 15h4"></path>
+            <path d="m16 15 4-4 1.5 1.5-4 4L15 17z"></path>
+          </svg>
+          <h3>Reflective Journal</h3>
+          <p>Log your feelings before and after. Over time, your past self starts talking to your future self.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section why">
+    <div class="container split">
+      <div class="stats reveal">
+        <div class="stat">
+          <span class="stat-number">30 sec</span>
+          <span class="stat-label">pause before every decision</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">0</span>
+          <span class="stat-label">accounts required</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">2500+</span>
+          <span class="stat-label">sites blocked by default</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <h2 class="pull-quote" style="font-size: clamp(1.9rem, 4vw, 3rem); margin-bottom: 1rem;">Why try Ravia</h2>
+        <p>Ravia does not promise a perfect path. It promises one thing: that the next decision will be a conscious one. That gap between urge and action is where change can begin.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section privacy has-grain">
+    <div class="container reveal">
+      <h2>Private by design.</h2>
+      <div class="privacy-list">
+        <p class="privacy-item">No account required - everything stored on your device</p>
+        <p class="privacy-item">No data sold or shared - ever</p>
+        <p class="privacy-item">No ads - no third party tracking</p>
+      </div>
+      <p class="privacy-note">Ravia is built for people who are not ready to tell anyone. Your privacy is the product.</p>
+    </div>
+  </section>
+
+  <section id="download" class="section cta">
+    <div class="container reveal">
+      <h2>Start with one conscious pause.</h2>
+      <p>Available on Android. Free to download.</p>
+      <a href="#" class="btn play-btn">Get it on Google Play</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-logo">Ravia</p>
+        <p>Path of Healing</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://abdulboriyx.github.io/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        <a href="https://abdulboriyx.github.io/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+      </div>
+      <div class="footer-note">
+        <p>Built by Abdulboriy Khusanov</p>
+        <small>Korea, 2025</small>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Ravia. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("siteNav");
+
+      function toggleNavState() {
+        if (window.scrollY > 16) {
+          nav.classList.add("scrolled");
+        } else {
+          nav.classList.remove("scrolled");
+        }
+      }
+
+      toggleNavState();
+      window.addEventListener("scroll", toggleNavState, { passive: true });
+
+      var revealItems = document.querySelectorAll(".reveal");
+      var observer = new IntersectionObserver(
+        function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.15,
+          rootMargin: "0px 0px -8% 0px"
+        }
+      );
+
+      revealItems.forEach(function (item) {
+        observer.observe(item);
+      });
+    })();
+  </script>
+</body>
+</html>
